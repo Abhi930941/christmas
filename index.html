@@ -1,732 +1,1020 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎄 Merry Christmas 🎅</title>
-    <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Happy New Year 2026 🎆</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html,body { height: 100%; }
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background: linear-gradient(180deg, #050418 0%, #0b0730 50%, #0f0518 100%);
+            color: #fff;
             overflow-x: hidden;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            color: white;
+            overflow-y: auto;
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
+            width: 100vw;
             min-height: 100vh;
+            position: relative;
         }
 
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+        .background { 
+            position: fixed; 
+            inset: 0; 
+            overflow: hidden; 
+            z-index: 0; 
+            pointer-events: none;
         }
-
-        #snowCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+        .gradient-overlay {
+            position: absolute; 
+            inset: 0;
+            opacity: 0.45;
+            background: radial-gradient(circle at 40% 30%, rgba(255, 215, 0, 0.10), rgba(0, 217, 255, 0.06), transparent 50%);
+            transform: translate3d(0,0,0);
+            transition: transform .25s ease-out;
             pointer-events: none;
             z-index: 1;
+            mix-blend-mode: screen;
         }
-
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle 3s ease-in-out infinite;
+        .stars, .orbs { 
+            position: absolute; 
+            inset: 0; 
+            z-index: 0; 
+            pointer-events: none; 
         }
 
         @keyframes twinkle {
             0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.2); }
+            50% { opacity: 1; transform: scale(1.1); }
         }
-
-        .hero {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            padding: 50px 20px 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -20px) rotate(120deg); }
+            66% { transform: translate(-20px, 15px) rotate(240deg); }
         }
+        @keyframes shimmer { 0% { transform: translateX(-120%);} 100% { transform: translateX(120%);} }
+        @keyframes ping { 0%{ transform: scale(1); opacity: 1 } 75%,100%{ transform: scale(1.8); opacity: 0 } }
+        @keyframes fadeIn { from{ opacity:0; transform: translateY(6px);} to{ opacity:1; transform:none; } }
+        @keyframes countdownPop { 0% { transform: translateZ(0) scale(.6); opacity: 0 } 60% { transform: translateZ(60px) scale(1.12); opacity: 1 } 100% { transform: translateZ(60px) scale(1); } }
+        @keyframes ringPulse { 0%{ transform: translate(-50%,-50%) scale(.3); opacity: .9 } 100%{ transform: translate(-50%,-50%) scale(1.6); opacity: 0 } }
 
-        .hero h1 {
-            font-family: 'Mountains of Christmas', cursive;
-            font-size: clamp(2.5rem, 8vw, 6rem);
-            font-weight: 700;
-            color: #fff;
-            text-shadow: 0 0 20px #ff6b6b, 0 0 40px #ff6b6b, 0 0 60px #ff6b6b;
-            animation: glowPulse 2s ease-in-out infinite, slideUp 1s ease-out;
-            margin-bottom: 15px;
+        canvas { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            pointer-events: none; 
+            z-index: 5; 
+            display: block; 
         }
+        #confettiCanvas { z-index: 7; }
+        #fireworksCanvas { z-index: 6; }
 
-        @keyframes glowPulse {
-            0%, 100% { text-shadow: 0 0 20px #ff6b6b, 0 0 40px #ff6b6b; }
-            50% { text-shadow: 0 0 30px #ff6b6b, 0 0 60px #ff6b6b, 0 0 80px #ff6b6b; }
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .hero p {
-            font-size: clamp(0.9rem, 2.5vw, 1.5rem);
-            color: #ffd700;
-            animation: fadeIn 1.5s ease-out 0.5s both;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .tree-section {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 30px 20px 40px;
-            animation: fadeIn 2s ease-out 1s both;
-        }
-
-        .tree {
-            position: relative;
-            width: 0;
-            height: 0;
-            margin-bottom: 15px;
-            animation: treeGrow 1.5s ease-out 1.5s both;
-        }
-
-        @keyframes treeGrow {
-            from { transform: scale(0); }
-            to { transform: scale(1); }
-        }
-
-        .tree-layer {
-            width: 0;
-            height: 0;
-            border-left: 50px solid transparent;
-            border-right: 50px solid transparent;
-            border-bottom: 85px solid #2d5016;
-            position: relative;
-            margin: -18px auto;
-            transform-origin: bottom center;
-            filter: drop-shadow(0 3px 8px rgba(0,0,0,0.4));
-        }
-
-        .tree-layer:nth-child(2) {
-            border-left: 70px solid transparent;
-            border-right: 70px solid transparent;
-            border-bottom: 105px solid #3a6b1f;
-            margin: -20px auto;
-        }
-
-        .tree-layer:nth-child(3) {
-            border-left: 90px solid transparent;
-            border-right: 90px solid transparent;
-            border-bottom: 125px solid #2d5016;
-            margin: -22px auto;
-        }
-
-        .trunk {
-            width: 40px;
-            height: 55px;
-            background: linear-gradient(135deg, #4a2511, #3d1f0e);
-            margin: 0 auto;
-            border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        }
-
-        .star-top {
-            position: absolute;
-            top: -35px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 2.5rem;
-            animation: starGlow 1.5s ease-in-out infinite;
-            filter: drop-shadow(0 0 10px #ffd700);
-        }
-
-        @keyframes starGlow {
-            0%, 100% { transform: translateX(-50%) scale(1) rotate(0deg); }
-            50% { transform: translateX(-50%) scale(1.2) rotate(180deg); }
-        }
-
-        .light {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            animation: blink 1.5s ease-in-out infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; box-shadow: 0 0 10px currentColor; }
-            50% { opacity: 0.3; }
-        }
-
-        .light:nth-child(1) { top: 20%; left: 30%; background: #ff6b6b; animation-delay: 0s; }
-        .light:nth-child(2) { top: 40%; left: 60%; background: #ffd700; animation-delay: 0.3s; }
-        .light:nth-child(3) { top: 60%; left: 25%; background: #4ecdc4; animation-delay: 0.6s; }
-        .light:nth-child(4) { top: 30%; right: 25%; background: #ff6b6b; animation-delay: 0.9s; }
-        .light:nth-child(5) { top: 50%; right: 35%; background: #ffd700; animation-delay: 1.2s; }
-        .light:nth-child(6) { top: 70%; left: 40%; background: #4ecdc4; animation-delay: 0.4s; }
-
-        .gifts {
-            display: flex;
-            gap: 25px;
-            margin-top: 25px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .gift {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #c41e3a, #8b1127);
-            border-radius: 5px;
-            position: relative;
-            animation: giftAppear 0.6s ease-out both;
-            transform-style: preserve-3d;
-            transition: transform 0.3s ease;
-        }
-
-        .gift:hover {
-            transform: rotateY(20deg) rotateX(10deg) scale(1.1);
-        }
-
-        .gift:nth-child(1) { animation-delay: 2s; }
-        .gift:nth-child(2) { animation-delay: 2.3s; background: linear-gradient(135deg, #2d5016, #1a3009); }
-        .gift:nth-child(3) { animation-delay: 2.6s; background: linear-gradient(135deg, #ffd700, #d4af37); }
-
-        @keyframes giftAppear {
-            from { opacity: 0; transform: translateY(50px) scale(0); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .gift::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            width: 100%;
-            height: 10px;
-            background: #ffd700;
-            transform: translateY(-50%);
-        }
-
-        .gift::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            width: 10px;
-            height: 100%;
-            background: #ffd700;
-            transform: translateX(-50%);
-        }
-
-        .celebrate-btn {
-            margin: 35px auto 25px;
-            padding: 18px 45px;
-            font-size: 1.4rem;
-            font-weight: 600;
-            background: linear-gradient(135deg, #c41e3a, #ff6b6b);
-            color: white;
-            border: none;
-            border-radius: 50px;
+        #clickArea {
+            position: fixed; 
+            inset: 0; 
+            z-index: 8; 
+            display: none; 
             cursor: pointer;
-            box-shadow: 0 10px 30px rgba(196, 30, 58, 0.4);
-            transition: all 0.3s ease;
-            animation: buttonPulse 2s ease-in-out infinite;
-            position: relative;
+            background: transparent;
+        }
+
+        .main-content {
+            position: relative; 
             z-index: 10;
-        }
-
-        .celebrate-btn:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 40px rgba(196, 30, 58, 0.6);
-        }
-
-        @keyframes buttonPulse {
-            0%, 100% { box-shadow: 0 10px 30px rgba(196, 30, 58, 0.4); }
-            50% { box-shadow: 0 10px 50px rgba(196, 30, 58, 0.7); }
-        }
-
-        .popup-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
+            display: flex; 
+            align-items: center; 
             justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.3s ease-out;
+            min-height: 100vh; 
+            padding: 2rem;
         }
 
-        .popup-overlay.active {
-            display: flex;
+        .stage { 
+            display: none; 
+            text-align: center; 
+            width: 100%; 
+            max-width: 1100px; 
+        }
+        .stage.active { 
+            display: block; 
+            animation: fadeIn .9s ease both; 
         }
 
-        .greeting-card {
-            background: linear-gradient(135deg, #2d5016, #3a6b1f);
-            border: 5px solid #ffd700;
-            border-radius: 20px;
-            padding: 50px;
-            max-width: 500px;
-            text-align: center;
-            position: relative;
-            animation: cardOpen 0.6s ease-out;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        .intro-content {
+            display:flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 1.5rem;
+            padding: 2rem;
+            backdrop-filter: blur(6px);
+            border-radius: 1.25rem;
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+            box-shadow: 0 8px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
         }
 
-        @keyframes cardOpen {
-            from { transform: scale(0) rotateY(90deg); opacity: 0; }
-            to { transform: scale(1) rotateY(0deg); opacity: 1; }
+        .title-bye {
+            font-size: clamp(2rem, 6vw, 4rem);
+            font-weight: 800;
+            background: linear-gradient(90deg,#ffd24b,#ff8a00);
+            -webkit-background-clip:text; 
+            background-clip:text; 
+            color: transparent;
+            filter: drop-shadow(0 6px 30px rgba(255,170,0,0.15));
+            transform: translateZ(0);
         }
 
-        .greeting-card h2 {
-            font-family: 'Mountains of Christmas', cursive;
-            font-size: 2.5rem;
-            color: #ffd700;
-            margin-bottom: 20px;
-            text-shadow: 0 0 20px #ffd700;
+        .title-welcome {
+            font-size: clamp(2rem, 6vw, 4rem);
+            font-weight: 900;
+            background: linear-gradient(90deg,#00e5ff,#7b6fff,#ff5bbd);
+            -webkit-background-clip:text; 
+            background-clip:text; 
+            color: transparent;
+            text-shadow: 0 6px 30px rgba(0,217,255,0.08);
+            transform: translateZ(0);
         }
 
-        .greeting-card p {
-            font-size: 1.3rem;
-            line-height: 1.8;
-            margin-bottom: 30px;
+        .dots-container { 
+            display:flex; 
+            gap: .8rem; 
+            align-items:center; 
+            justify-content:center; 
+            margin: 0.6rem 0; 
+        }
+        .dot { 
+            width: .6rem; 
+            height: .6rem; 
+            border-radius:50%; 
+            background: #ffd24b; 
+            box-shadow: 0 0 12px rgba(255,210,80,0.35); 
+            animation: ping 1.8s infinite; 
         }
 
-        .greeting-message {
-            font-size: 1.15rem;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            color: #fff;
-            font-style: italic;
-        }
-
-        .close-btn {
-            padding: 15px 40px;
-            font-size: 1.1rem;
-            background: #c41e3a;
-            color: white;
+        .start-button {
+            margin-top: 1.25rem;
+            padding: .9rem 2.2rem;
+            font-size: 1.05rem;
+            font-weight: 800;
+            border-radius: 999px;
             border: none;
-            border-radius: 30px;
+            color: white;
             cursor: pointer;
+            background: linear-gradient(90deg,#ffb84d,#ff5bc6,#00d9ff);
+            background-size: 200% 200%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 30px rgba(255,215,0,0.07);
+            transition: transform .25s ease, box-shadow .25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .start-button[disabled] { 
+            opacity: 0.6; 
+            cursor: not-allowed; 
+            transform: none; 
+        }
+        .start-button:hover { 
+            transform: translateY(-6px) scale(1.02); 
+            box-shadow: 0 18px 60px rgba(0,0,0,0.65); 
+        }
+        .start-button .shimmer {
+            position:absolute; 
+            inset:0; 
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
+            transform: translateX(-120%); 
+            opacity: 0.2; 
+            pointer-events:none; 
+            animation: shimmer 2.2s linear infinite;
+        }
+
+        .countdown-content { 
+            display:flex; 
+            align-items:center; 
+            justify-content:center; 
+            height: 50vh; 
+        }
+        .countdown-number {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: clamp(200px, 45vw, 520px);
+            height: clamp(200px, 45vw, 520px);
+            border-radius: 50%;
+            background: radial-gradient(closest-side, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+            box-shadow: inset 0 8px 40px rgba(255,255,255,0.02), 0 20px 60px rgba(0,0,0,0.6);
+            transform-style: preserve-3d;
+        }
+        .count-number-text {
+            font-size: clamp(4rem, 12vw, 12rem);
+            font-weight: 900;
+            z-index: 30;
+            background: linear-gradient(90deg, #ffd24b, #00e5ff, #ff6fff);
+            -webkit-background-clip:text; 
+            background-clip:text; 
+            color: transparent;
+            text-shadow: 0 6px 30px rgba(0,217,255,0.06);
+            transform: translateZ(60px);
+            animation: countdownPop .9s cubic-bezier(.2,.8,.2,1);
+        }
+        .ring {
+            position: absolute;
+            top: 50%; 
+            left: 50%;
+            transform: translate(-50%,-50%);
+            border-radius: 50%;
+            border: 6px solid rgba(255,255,255,0.06);
+            pointer-events: none;
+            animation: ringPulse 1s cubic-bezier(.2,.8,.2,1) forwards;
+            z-index: 10;
+            mix-blend-mode: screen;
+        }
+        .ring.r1 { 
+            width: 160px; 
+            height:160px; 
+            border-color: rgba(255,215,0,0.35); 
+            box-shadow: 0 0 40px rgba(255,215,0,0.15); 
+            animation-delay: 0s; 
+        }
+        .ring.r2 { 
+            width: 260px; 
+            height:260px; 
+            border-color: rgba(0,217,255,0.25); 
+            box-shadow: 0 0 60px rgba(0,217,255,0.07); 
+            animation-delay: .08s; 
+        }
+        .ring.r3 { 
+            width: 360px; 
+            height:360px; 
+            border-color: rgba(255,0,255,0.18); 
+            box-shadow: 0 0 80px rgba(255,0,255,0.06); 
+            animation-delay: .16s; 
+        }
+
+        .celebration-content { 
+            display:flex; 
+            flex-direction:column; 
+            align-items:center; 
+            gap: 1.6rem; 
+            padding: 1rem; 
+        }
+        .year-2026 {
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 900;
+            background: linear-gradient(90deg,#ffd24b,#00e5ff,#ff6fff);
+            -webkit-background-clip:text; 
+            background-clip:text; 
+            color: transparent;
+            filter: drop-shadow(0 10px 40px rgba(0,0,0,0.6));
+        }
+        .happy-text { 
+            font-weight: 800; 
+            font-size: clamp(1rem, 3.5vw, 1.75rem); 
+            color: #fff; 
+            text-shadow: 0 6px 30px rgba(0,0,0,0.6);
+        }
+        .emoji-row { 
+            display:flex; 
+            gap:1rem; 
+            font-size:2.2rem; 
+        }
+
+        .card-button {
+            padding: .8rem 1.6rem; 
+            font-weight:700; 
+            border-radius: 999px; 
+            border: 2px solid rgba(255,255,255,0.06);
+            background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); 
+            color:#fff; 
+            cursor:pointer;
             transition: all 0.3s ease;
         }
-
-        .close-btn:hover {
-            background: #8b1127;
-            transform: scale(1.05);
+        .card-button:hover {
+            background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+            transform: translateY(-3px);
         }
 
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background: #ffd700;
-            position: fixed;
-            top: -10px;
-            z-index: 999;
-            animation: confettiFall 3s linear forwards;
+        .instructions { 
+            margin-top: 1rem; 
+            color: rgba(255,255,255,0.85); 
+            text-align:center; 
+            max-width: 680px; 
+            font-size: 0.95rem;
+            line-height: 1.5;
         }
 
-        @keyframes confettiFall {
-            to {
-                transform: translateY(100vh) rotate(360deg);
-                opacity: 0;
-            }
+        .modal { 
+            display:none; 
+            position: fixed; 
+            inset:0; 
+            z-index: 50; 
+            align-items:center; 
+            justify-content:center; 
+            padding: 1.2rem; 
+            background: rgba(0,0,0,0.6); 
+            backdrop-filter: blur(6px); 
         }
-
-        .firework {
-            position: fixed;
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            z-index: 998;
-            animation: fireworkExplode 1s ease-out forwards;
+        .modal.active { 
+            display:flex; 
         }
-
-        @keyframes fireworkExplode {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(30); opacity: 0; }
-        }
-
-        footer {
+        .modal-content {
+            width:100%; 
+            max-width: 720px; 
+            padding: 2.2rem; 
+            border-radius: 1rem;
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+            border: 1px solid rgba(255,255,255,0.04);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.6);
             position: relative;
-            z-index: 2;
-            text-align: center;
-            padding: 30px 20px 20px;
-            font-size: 1.1rem;
-            color: #ffd700;
-            animation: fadeIn 3s ease-out 2s both;
+        }
+        .close-button {
+            position:absolute; 
+            top: .6rem; 
+            right: .8rem; 
+            background:none; 
+            border:none; 
+            color:#fff; 
+            font-size: 2rem; 
+            cursor:pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.3s ease;
+        }
+        .close-button:hover {
+            background: rgba(255,255,255,0.1);
         }
 
-        footer .heart {
-            color: #ff6b6b;
-            animation: heartBeat 1.5s ease-in-out infinite;
-            display: inline-block;
+        /* ---------- Responsive ---------- */
+        @media (max-width: 720px) {
+            .countdown-number { 
+                width: clamp(200px, 70vw, 380px); 
+                height: clamp(200px, 70vw, 380px); 
+            }
+            .count-number-text { 
+                font-size: clamp(3rem, 20vw, 6rem); 
+            }
+            .title-bye, .title-welcome { 
+                font-size: clamp(1.6rem, 7vw, 2.6rem); 
+            }
+            .start-button { 
+                padding: .7rem 1.6rem; 
+                font-size: .95rem; 
+            }
+            .emoji-row { 
+                font-size: 1.6rem; 
+            }
+            canvas { 
+                image-rendering: optimizeSpeed; 
+            }
+            .main-content {
+                padding: 1rem;
+            }
+            .intro-content {
+                padding: 1.5rem;
+            }
         }
-
-        @keyframes heartBeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-
-        @media (max-width: 768px) {
-            .hero {
-                padding: 40px 20px 20px;
+        
+        @media (max-width: 480px) {
+            .title-bye, .title-welcome { 
+                font-size: clamp(1.4rem, 6vw, 2rem); 
             }
-
-            .tree-section {
-                padding: 20px 20px 30px;
+            .year-2026 {
+                font-size: clamp(2.5rem, 12vw, 5rem);
             }
-
-            .tree-layer {
-                border-left: 35px solid transparent;
-                border-right: 35px solid transparent;
-                border-bottom: 60px solid #2d5016;
-            }
-
-            .tree-layer:nth-child(2) {
-                border-left: 50px solid transparent;
-                border-right: 50px solid transparent;
-                border-bottom: 75px solid #3a6b1f;
-            }
-
-            .tree-layer:nth-child(3) {
-                border-left: 65px solid transparent;
-                border-right: 65px solid transparent;
-                border-bottom: 90px solid #2d5016;
-            }
-
-            .gift {
-                width: 55px;
-                height: 55px;
-            }
-
-            .gifts {
-                gap: 20px;
-                margin-top: 20px;
-            }
-
-            .celebrate-btn {
-                margin: 25px auto 20px;
-                padding: 15px 35px;
-                font-size: 1.2rem;
-            }
-
-            .greeting-card {
-                padding: 30px;
-                margin: 20px;
-            }
-
-            footer {
-                padding: 20px 20px 15px;
-                font-size: 1rem;
+            .instructions {
+                font-size: 0.85rem;
+                padding: 0 1rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="stars" id="stars"></div>
+    <div class="background" aria-hidden="true">
+        <div class="gradient-overlay" id="gradientOverlay"></div>
+        <div class="stars" id="stars"></div>
+        <div class="orbs" id="orbs"></div>
+    </div>
 
-    <canvas id="snowCanvas"></canvas>
+    <canvas id="fireworksCanvas" aria-hidden="true"></canvas>
+    <canvas id="confettiCanvas" aria-hidden="true"></canvas>
+    <div id="clickArea" title="Click for explosions"></div>
 
-    <section class="hero">
-        <h1>🎄 Merry Christmas 🎅</h1>
-        <p>Wishing You Joy, Love & Happiness</p>
-    </section>
-
-    <section class="tree-section">
-        <div class="tree">
-            <div class="star-top">⭐</div>
-            <div class="tree-layer">
-                <div class="light"></div>
-                <div class="light"></div>
+    <div class="main-content">
+        <div id="introStage" class="stage active">
+            <div class="intro-content" role="region" aria-label="Intro">
+                <h1 class="title-bye">👋 Bye Bye 2025</h1>
+                <div class="dots-container" aria-hidden="true">
+                    <div class="dot" style="animation-delay: 0s;"></div>
+                    <div class="dot" style="animation-delay: .15s;"></div>
+                    <div class="dot" style="animation-delay: .30s;"></div>
+                    <div class="dot" style="animation-delay: .45s;"></div>
+                    <div class="dot" style="animation-delay: .60s;"></div>
+                </div>
+                <h2 class="title-welcome">🎉 Welcome 2026 🎆</h2>
+                <button id="startButton" class="start-button" aria-label="Start 2026">
+                    <span>Start 2026 🚀</span>
+                    <div class="shimmer" aria-hidden="true"></div>
+                </button>
             </div>
-            <div class="tree-layer">
-                <div class="light"></div>
-                <div class="light"></div>
-            </div>
-            <div class="tree-layer">
-                <div class="light"></div>
-                <div class="light"></div>
-            </div>
-            <div class="trunk"></div>
         </div>
 
-        <div class="gifts">
-            <div class="gift"></div>
-            <div class="gift"></div>
-            <div class="gift"></div>
+        <div id="countdownStage" class="stage" aria-hidden="true">
+            <div class="countdown-content">
+                <div id="countdownNumber" class="countdown-number" aria-live="polite" aria-atomic="true"></div>
+            </div>
         </div>
 
-        <button class="celebrate-btn" id="celebrateBtn">Celebrate 🎁</button>
-    </section>
-
-    <div class="popup-overlay" id="popupOverlay">
-        <div class="greeting-card">
-            <h2>🎅 Merry Christmas! 🎄</h2>
-            <p style="font-size: 1.4rem; font-weight: 600; color: #ffd700; margin-bottom: 15px;">
-                May this festive season bring you endless joy!
-            </p>
-            <p class="greeting-message">
-                "May your days be merry and bright,<br>
-                May your heart be filled with love and light"
-            </p>
-            <p style="font-size: 1.1rem; color: #ffed4e;">
-                ✨ Wishing you peace, prosperity, and magical moments! ✨
-            </p>
-            <button class="close-btn" id="closeBtn">Close</button>
+        <div id="celebrationStage" class="stage" aria-hidden="true">
+            <div class="celebration-content">
+                <div class="year-container">
+                    <h1 class="year-2026">2026</h1>
+                </div>
+                <p class="happy-text">🎊 HAPPY NEW YEAR! 🎊</p>
+                <div class="emoji-row" aria-hidden="true">
+                    <span>🎆</span><span>🎉</span><span>✨</span><span>🎊</span><span>💫</span>
+                </div>
+                <div style="display:flex; gap:1rem; align-items:center; justify-content:center; margin-top: .8rem;">
+                    <button id="cardButton" class="card-button" aria-haspopup="dialog">Open Greeting Card 💌</button>
+                </div>
+                <div class="instructions" aria-hidden="true">
+                    <p><strong>🎆 Created by Sahani Abhishek. 🎆</strong></p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <footer>
-        Made with <span class="heart">❤️</span> for Christmas | Created by Sahani Abhishek.
-    </footer>
+    <div id="cardModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="modal-content">
+            <button id="closeCard" class="close-button" aria-label="Close card">×</button>
+            <div style="text-align:center;">
+                <div style="font-size:4rem;">🎆</div>
+                <h2 style="font-weight:900; margin: .6rem 0; font-size: clamp(1.5rem, 4vw, 2.5rem);">Happy New Year 2026!</h2>
+                <p style="margin:.5rem 0; font-weight:700;">✨ New Dreams • 💫 New Hopes • 🌟 New Success</p>
+                <p style="opacity: .85; margin-top:.6rem;">Make This Year Unforgettable!</p>
+                <button id="closeModalBtn" style="margin-top:1.5rem; padding:0.6rem 1.5rem; background:linear-gradient(90deg,#ffd24b,#ff8a00); border:none; border-radius:999px; color:white; font-weight:bold; cursor:pointer;">Close</button>
+            </div>
+        </div>
+    </div>
 
     <script>
-        const starsContainer = document.getElementById('stars');
-        for (let i = 0; i < 100; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            star.style.width = Math.random() * 3 + 'px';
-            star.style.height = star.style.width;
-            star.style.left = Math.random() * 100 + '%';
-            star.style.top = Math.random() * 100 + '%';
-            star.style.animationDelay = Math.random() * 3 + 's';
-            starsContainer.appendChild(star);
+    (function () {
+
+        const MAX_FIREWORKS = 6;
+        const MAX_SPARKLES = 80;
+        const MAX_CONFETTI = 60;
+        const CLICK_THROTTLE_MS = 350;
+        
+
+        let stage = 'intro';
+        let countdownValue = 3;
+        let mousePos = { x: 0, y: 0 };
+
+
+        const fireworksCanvas = document.getElementById('fireworksCanvas');
+        const confettiCanvas = document.getElementById('confettiCanvas');
+        const fwCtx = fireworksCanvas.getContext('2d');
+        const confettiCtx = confettiCanvas.getContext('2d');
+
+        const introStage = document.getElementById('introStage');
+        const countdownStage = document.getElementById('countdownStage');
+        const celebrationStage = document.getElementById('celebrationStage');
+        const startButton = document.getElementById('startButton');
+        const cardButton = document.getElementById('cardButton');
+        const cardModal = document.getElementById('cardModal');
+        const closeCard = document.getElementById('closeCard');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const clickArea = document.getElementById('clickArea');
+        const countdownNumber = document.getElementById('countdownNumber');
+        const gradientOverlay = document.getElementById('gradientOverlay');
+
+        let fireworks = [];
+        let sparkles = [];
+        let confettiPieces = [];
+
+        let fwRaf = null;
+        let confettiRaf = null;
+
+        let rocketIntervals = [];
+        let autoRocketsRunning = false;
+
+        let audioContext = null;
+
+        let lastClickTime = 0;
+
+        function resizeCanvas() {
+            const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+            
+            [fireworksCanvas, confettiCanvas].forEach(canvas => {
+                const width = window.innerWidth;
+                const height = window.innerHeight;
+                
+                canvas.width = width * dpr;
+                canvas.height = height * dpr;
+                canvas.style.width = width + 'px';
+                canvas.style.height = height + 'px';
+                
+                const ctx = canvas.getContext('2d');
+                ctx.scale(dpr, dpr);
+            });
+        }
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            if (!starsContainer) return;
+            
+            starsContainer.innerHTML = '';
+            const count = Math.min(80, Math.floor(window.innerWidth / 10));
+            
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.style.cssText = `
+                    position: absolute;
+                    width: ${Math.random() * 2 + 1}px;
+                    height: ${Math.random() * 2 + 1}px;
+                    background: white;
+                    border-radius: 50%;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    opacity: ${Math.random() * 0.5 + 0.3};
+                    box-shadow: 0 0 ${Math.random() * 4 + 2}px white;
+                    animation: twinkle ${Math.random() * 3 + 2}s infinite ${Math.random() * 2}s;
+                `;
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        function createOrbs() {
+            const orbsContainer = document.getElementById('orbs');
+            if (!orbsContainer) return;
+            
+            orbsContainer.innerHTML = '';
+            const colors = [
+                'radial-gradient(circle, rgba(255,215,0,0.08) 0%, transparent 70%)',
+                'radial-gradient(circle, rgba(0,217,255,0.06) 0%, transparent 70%)',
+                'radial-gradient(circle, rgba(255,0,255,0.06) 0%, transparent 70%)'
+            ];
+            const count = 8;
+            
+            for (let i = 0; i < count; i++) {
+                const orb = document.createElement('div');
+                const size = Math.random() * 100 + 50;
+                orb.style.cssText = `
+                    position: absolute;
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    border-radius: 50%;
+                    background: ${colors[Math.floor(Math.random() * colors.length)]};
+                    filter: blur(20px);
+                    opacity: ${Math.random() * 0.3 + 0.4};
+                    animation: float ${Math.random() * 10 + 8}s ease-in-out infinite ${Math.random() * 3}s;
+                `;
+                orbsContainer.appendChild(orb);
+            }
         }
 
-        const canvas = document.getElementById('snowCanvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const snowflakes = [];
-        const numberOfSnowflakes = 150;
-
-        class Snowflake {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.radius = Math.random() * 3 + 1;
-                this.speed = Math.random() * 1 + 0.5;
-                this.wind = Math.random() * 0.5 - 0.25;
+        document.addEventListener('mousemove', (e) => {
+            mousePos.x = (e.clientX / window.innerWidth - 0.5) * 40;
+            mousePos.y = (e.clientY / window.innerHeight - 0.5) * 30;
+            if (gradientOverlay) {
+                gradientOverlay.style.transform = `translate(${mousePos.x}px, ${mousePos.y}px)`;
             }
+        });
 
+        function playExplosionSound() {
+            try {
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                
+                if (Math.random() > 0.5) return; // Play only 50% of sounds
+                
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = 200 + Math.random() * 150;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.4);
+                
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + 0.4);
+            } catch (e) {
+ 
+            }
+        }
+
+  
+        class Sparkle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color || '#ffffff';
+                this.size = Math.random() * 2 + 0.5;
+                this.alpha = 1;
+                this.decay = 0.02 + Math.random() * 0.03;
+                this.vx = (Math.random() - 0.5) * 2;
+                this.vy = (Math.random() - 0.5) * 2;
+            }
+            
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.alpha -= this.decay;
+            }
+            
+            draw(ctx) {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color || '#ffd700';
+                this.size = Math.random() * 3 + 1;
+                this.speed = Math.random() * 3 + 1;
+                this.angle = Math.random() * Math.PI * 2;
+                this.vx = Math.cos(this.angle) * this.speed;
+                this.vy = Math.sin(this.angle) * this.speed;
+                this.gravity = 0.1;
+                this.alpha = 1;
+                this.decay = 0.01 + Math.random() * 0.02;
+            }
+            
+            update() {
+                this.vy += this.gravity;
+                this.x += this.vx;
+                this.y += this.vy;
+                this.alpha -= this.decay;
+                this.size *= 0.99;
+            }
+            
+            draw(ctx) {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        class Firework {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.particles = [];
+                this.color = this.getRandomColor();
+                this.createExplosion();
+                playExplosionSound();
+            }
+            
+            getRandomColor() {
+                const colors = ['#ffd700', '#00d9ff', '#ff00ff', '#00ff88', '#ff0088', '#ff6b00'];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+            
+            createExplosion() {
+                const particleCount = 40 + Math.floor(Math.random() * 30);
+                for (let i = 0; i < particleCount; i++) {
+                    this.particles.push(new Particle(this.x, this.y, this.color));
+                }
+            }
+            
+            update() {
+                for (let i = this.particles.length - 1; i >= 0; i--) {
+                    this.particles[i].update();
+                    if (this.particles[i].alpha <= 0) {
+                        this.particles.splice(i, 1);
+                    }
+                }
+            }
+            
+            draw(ctx) {
+                this.particles.forEach(particle => particle.draw(ctx));
+            }
+            
+            isDead() {
+                return this.particles.length === 0;
+            }
+        }
+
+        class ConfettiPiece {
+            constructor() {
+                this.x = Math.random() * window.innerWidth;
+                this.y = -20;
+                this.size = Math.random() * 8 + 4;
+                this.speed = Math.random() * 2 + 1;
+                this.color = this.getRandomColor();
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = Math.random() * 4 - 2;
+            }
+            
+            getRandomColor() {
+                const colors = ['#ffd700', '#00d9ff', '#ff00ff', '#00ff88', '#ff0088'];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+            
             update() {
                 this.y += this.speed;
-                this.x += this.wind;
-
-                if (this.y > canvas.height) {
-                    this.y = 0;
-                    this.x = Math.random() * canvas.width;
-                }
-
-                if (this.x > canvas.width) {
-                    this.x = 0;
-                } else if (this.x < 0) {
-                    this.x = canvas.width;
+                this.x += Math.sin(this.y * 0.01) * 0.5;
+                this.rotation += this.rotationSpeed;
+                
+                if (this.y > window.innerHeight) {
+                    this.y = -10;
+                    this.x = Math.random() * window.innerWidth;
                 }
             }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-                ctx.fill();
-                ctx.closePath();
+            
+            draw(ctx) {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation * Math.PI / 180);
+                ctx.fillStyle = this.color;
+                ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
+                ctx.restore();
             }
         }
 
-        for (let i = 0; i < numberOfSnowflakes; i++) {
-            snowflakes.push(new Snowflake());
-        }
+        function animateFireworks() {
+            fwCtx.clearRect(0, 0, fireworksCanvas.width, fireworksCanvas.height);
+            
 
-        function animateSnow() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            snowflakes.forEach(snowflake => {
-                snowflake.update();
-                snowflake.draw();
+            for (let i = fireworks.length - 1; i >= 0; i--) {
+                fireworks[i].update();
+                fireworks[i].draw(fwCtx);
+                
+                if (fireworks[i].isDead()) {
+                    fireworks.splice(i, 1);
+                }
+            }
+            
+
+            for (let i = sparkles.length - 1; i >= 0; i--) {
+                sparkles[i].update();
+                sparkles[i].draw(fwCtx);
+                
+                if (sparkles[i].alpha <= 0) {
+                    sparkles.splice(i, 1);
+                }
+            }
+            
+            fwRaf = requestAnimationFrame(animateFireworks);
+        }
+        
+        function animateConfetti() {
+            confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            
+            confettiPieces.forEach(confetti => {
+                confetti.update();
+                confetti.draw(confettiCtx);
             });
-            requestAnimationFrame(animateSnow);
+            
+            confettiRaf = requestAnimationFrame(animateConfetti);
+        }
+        
+        function startFireworksLoop() {
+            if (!fwRaf) {
+                animateFireworks();
+            }
+        }
+        
+        function startConfettiLoop() {
+            if (!confettiRaf) {
+                animateConfetti();
+            }
         }
 
-        animateSnow();
+        function createExplosion(x, y) {
+            if (fireworks.length >= MAX_FIREWORKS) return;
+            
+            const firework = new Firework(x, y);
+            fireworks.push(firework);
 
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            for (let i = 0; i < 10 && sparkles.length < MAX_SPARKLES; i++) {
+                sparkles.push(new Sparkle(
+                    x + (Math.random() - 0.5) * 50,
+                    y + (Math.random() - 0.5) * 50,
+                    firework.color
+                ));
+            }
+        }
+
+
+        function startAutomaticFireworks() {
+            if (autoRocketsRunning) return;
+            autoRocketsRunning = true;
+            
+
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    createExplosion(
+                        Math.random() * window.innerWidth * 0.8 + window.innerWidth * 0.1,
+                        Math.random() * window.innerHeight * 0.3 + 50
+                    );
+                }, i * 300);
+            }
+
+            const interval = setInterval(() => {
+                if (fireworks.length < MAX_FIREWORKS / 2) {
+                    createExplosion(
+                        Math.random() * window.innerWidth * 0.8 + window.innerWidth * 0.1,
+                        Math.random() * window.innerHeight * 0.3 + 50
+                    );
+                }
+            }, 1500);
+            
+            rocketIntervals.push(interval);
+            
+
+            confettiPieces = [];
+            for (let i = 0; i < MAX_CONFETTI; i++) {
+                confettiPieces.push(new ConfettiPiece());
+            }
+            startConfettiLoop();
+            
+
+            const stopTimeout = setTimeout(stopAutomaticFireworks, 20000);
+            rocketIntervals.push(stopTimeout);
+        }
+        
+        function stopAutomaticFireworks() {
+            rocketIntervals.forEach(interval => {
+                if (typeof interval === 'number') {
+                    clearTimeout(interval);
+                } else {
+                    clearInterval(interval);
+                }
+            });
+            rocketIntervals = [];
+            autoRocketsRunning = false;
+            confettiPieces = [];
+        }
+
+        function renderCountdownValue(val) {
+            countdownNumber.innerHTML = `
+                <div class="count-number-text">${val}</div>
+                <div class="ring r1"></div>
+                <div class="ring r2"></div>
+                <div class="ring r3"></div>
+            `;
+        }
+
+        function showStage(newStage) {
+  
+            [introStage, countdownStage, celebrationStage].forEach(stage => {
+                stage.classList.remove('active');
+                stage.setAttribute('aria-hidden', 'true');
+            });
+            
+
+            if (newStage === 'intro') {
+                introStage.classList.add('active');
+                introStage.setAttribute('aria-hidden', 'false');
+                clickArea.style.display = 'none';
+                stopAutomaticFireworks();
+                fireworks = [];
+                sparkles = [];
+            } else if (newStage === 'countdown') {
+                countdownStage.classList.add('active');
+                countdownStage.setAttribute('aria-hidden', 'false');
+                clickArea.style.display = 'none';
+                startFireworksLoop();
+            } else if (newStage === 'celebration') {
+                celebrationStage.classList.add('active');
+                celebrationStage.setAttribute('aria-hidden', 'false');
+                clickArea.style.display = 'block';
+                startAutomaticFireworks();
+            }
+            
+            stage = newStage;
+        }
+
+        function startCountdown() {
+            if (startButton.disabled) return;
+            
+            startButton.disabled = true;
+            countdownValue = 3;
+            
+            showStage('countdown');
+            renderCountdownValue(countdownValue);
+            
+            const countdownInterval = setInterval(() => {
+                countdownValue--;
+                
+                if (countdownValue > 0) {
+                    renderCountdownValue(countdownValue);
+                } else {
+                    clearInterval(countdownInterval);
+                    renderCountdownValue('🎉');
+                    
+                    setTimeout(() => {
+                        showStage('celebration');
+                        startButton.disabled = false;
+                    }, 1000);
+                }
+            }, 1000);
+        }
+
+        startButton.addEventListener('click', startCountdown);
+        
+        startButton.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                startCountdown();
+            }
         });
-
-        function playJingleBell() {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
-            const melody = [
-                
-                { note: 659.25, duration: 0.3 }, // E
-                { note: 659.25, duration: 0.3 }, // E
-                { note: 659.25, duration: 0.6 }, // E
-                { note: 659.25, duration: 0.3 }, // E
-                { note: 659.25, duration: 0.3 }, // E
-                { note: 659.25, duration: 0.6 }, // E
-                { note: 659.25, duration: 0.3 }, // E
-                { note: 783.99, duration: 0.3 }, // G
-                { note: 523.25, duration: 0.4 }, // C
-                { note: 587.33, duration: 0.2 }, // D
-                { note: 659.25, duration: 0.9 }, // E
-                { note: 0, duration: 0.3 }, // pause
-                
-
-                { note: 698.46, duration: 0.3 }, // F
-                { note: 698.46, duration: 0.3 }, // F
-                { note: 698.46, duration: 0.4 }, // F
-                { note: 698.46, duration: 0.2 }, // F
-                { note: 698.46, duration: 0.3 }, // F
-                { note: 659.25, duration: 0.3 }, // E
-                { note: 659.25, duration: 0.3 }, // E
-                { note: 659.25, duration: 0.2 }, // E
-                { note: 659.25, duration: 0.1 }, // E
-                { note: 659.25, duration: 0.3 }, // E
-                { note: 587.33, duration: 0.3 }, // D
-                { note: 587.33, duration: 0.3 }, // D
-                { note: 659.25, duration: 0.3 }, // E
-                { note: 587.33, duration: 0.6 }, // D
-                { note: 783.99, duration: 0.6 }, // G
-                { note: 0, duration: 0.3 }, // pause
-                
-               
-                { note: 659.25, duration: 0.3 }, // E
-                { note: 659.25, duration: 0.3 }, // E
-                { note: 659.25, duration: 0.6 }, // E
-                { note: 659.25, duration: 0.3 }, // E
-                { note: 659.25, duration: 0.3 }, // E
-                { note: 659.25, duration: 0.6 }, // E
-                { note: 659.25, duration: 0.3 }, // E
-                { note: 783.99, duration: 0.3 }, // G
-                { note: 523.25, duration: 0.4 }, // C
-                { note: 587.33, duration: 0.2 }, // D
-                { note: 659.25, duration: 1.2 }, // E
-            ];
-            
-            let currentTime = audioContext.currentTime;
-            
-            melody.forEach((item) => {
-                if (item.note > 0) {
-                    const oscillator = audioContext.createOscillator();
-                    const gainNode = audioContext.createGain();
-                    
-                    oscillator.connect(gainNode);
-                    gainNode.connect(audioContext.destination);
-                    
-                    oscillator.frequency.value = item.note;
-                    oscillator.type = 'sine';
-                    
-                    gainNode.gain.setValueAtTime(0.3, currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, currentTime + item.duration);
-                    
-                    oscillator.start(currentTime);
-                    oscillator.stop(currentTime + item.duration);
-                }
-                
-                currentTime += item.duration;
-            });
+        
+        cardButton.addEventListener('click', () => {
+            cardModal.classList.add('active');
+            cardModal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        });
+        
+        function closeModal() {
+            cardModal.classList.remove('active');
+            cardModal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
         }
-        function createConfetti() {
-            for (let i = 0; i < 100; i++) {
-                setTimeout(() => {
-                    const confetti = document.createElement('div');
-                    confetti.className = 'confetti';
-                    confetti.style.left = Math.random() * 100 + '%';
-                    confetti.style.background = ['#ff6b6b', '#ffd700', '#4ecdc4', '#ff6b6b', '#2d5016'][Math.floor(Math.random() * 5)];
-                    confetti.style.animationDelay = Math.random() * 0.5 + 's';
-                    document.body.appendChild(confetti);
-
-                    setTimeout(() => confetti.remove(), 3000);
-                }, i * 30);
+        
+        closeCard.addEventListener('click', closeModal);
+        closeModalBtn.addEventListener('click', closeModal);
+        
+        cardModal.addEventListener('click', (e) => {
+            if (e.target === cardModal) {
+                closeModal();
             }
-        }
-
-        function createFireworks() {
-            for (let i = 0; i < 20; i++) {
-                setTimeout(() => {
-                    const x = Math.random() * window.innerWidth;
-                    const y = Math.random() * window.innerHeight * 0.6;
-                    
-                    for (let j = 0; j < 35; j++) {
-                        const firework = document.createElement('div');
-                        firework.className = 'firework';
-                        firework.style.left = x + 'px';
-                        firework.style.top = y + 'px';
-                        firework.style.background = ['#ff6b6b', '#ffd700', '#4ecdc4', '#ff69b4', '#ffed4e', '#fff'][Math.floor(Math.random() * 6)];
-                        
-                        const angle = (Math.PI * 2 * j) / 35;
-                        const velocity = Math.random() * 120 + 60;
-                        firework.style.setProperty('--tx', Math.cos(angle) * velocity + 'px');
-                        firework.style.setProperty('--ty', Math.sin(angle) * velocity + 'px');
-                        
-                        document.body.appendChild(firework);
-                        
-                        setTimeout(() => firework.remove(), 1500);
-                    }
-                }, i * 400);
-            }
-        }
-
-        const celebrateBtn = document.getElementById('celebrateBtn');
-        const popupOverlay = document.getElementById('popupOverlay');
-        const closeBtn = document.getElementById('closeBtn');
-
-        celebrateBtn.addEventListener('click', () => {
-            playJingleBell();
-            createConfetti();
-            createFireworks();
+        });
+        
+        clickArea.addEventListener('click', (e) => {
+            if (stage !== 'celebration') return;
+            
+            const now = Date.now();
+            if (now - lastClickTime < CLICK_THROTTLE_MS) return;
+            lastClickTime = now;
+            
+            createExplosion(e.clientX, e.clientY);
             
             setTimeout(() => {
-                popupOverlay.classList.add('active');
-            }, 1000);
+                createExplosion(
+                    Math.max(50, e.clientX - 80 + Math.random() * 60),
+                    Math.max(50, e.clientY - 40 + Math.random() * 80)
+                );
+            }, 150);
+            
+            setTimeout(() => {
+                createExplosion(
+                    Math.min(window.innerWidth - 50, e.clientX + 80 + Math.random() * 60),
+                    Math.max(50, e.clientY - 40 + Math.random() * 80)
+                );
+            }, 300);
         });
+ 
+        function init() {
+            createStars();
+            createOrbs();
+            renderCountdownValue('3');
+            startFireworksLoop();
+            
+            showStage('intro');
 
-        closeBtn.addEventListener('click', () => {
-            popupOverlay.classList.remove('active');
-        });
-
-        popupOverlay.addEventListener('click', (e) => {
-            if (e.target === popupOverlay) {
-                popupOverlay.classList.remove('active');
+            function setVH() {
+                let vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', `${vh}px`);
             }
-        });
+            setVH();
+            window.addEventListener('resize', setVH);
+        }
+
+        window.addEventListener('load', init);
+
+        if (document.readyState === 'complete') {
+            init();
+        }
+
+    })();
     </script>
 </body>
 </html>
